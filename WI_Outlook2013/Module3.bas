@@ -1,3 +1,17 @@
+ï»¿' Copyright (C) 2026 ZMS
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Attribute VB_Name = "Module3"
 Option Explicit
 
@@ -8,7 +22,7 @@ Public SzukanaDataRaw As String
 Public CzySzukacOutlook As Boolean
 Public CzySzukacSerwer As Boolean
 
-' --- FLAGI SESJI (LOGIKA: NADPISZ/POMIÑ WSZYSTKIE) ---
+' --- FLAGI SESJI (LOGIKA: NADPISZ/POMIï¿½ WSZYSTKIE) ---
 Dim G_NadpiszWszystkie As Boolean
 Dim G_PominWszystkie As Boolean
 
@@ -48,7 +62,7 @@ Private Function CzyZapisywacMetadane() As Boolean
 End Function
 
 ' =========================================================
-' 1. G£ÓWNA PROCEDURA WYSZUKIWANIA
+' 1. Gï¿½ï¿½WNA PROCEDURA WYSZUKIWANIA
 ' =========================================================
 Sub ZaawansowaneWyszukiwanieWI()
     Dim folderZapisu As String
@@ -70,7 +84,7 @@ Sub ZaawansowaneWyszukiwanieWI()
     
     docelowyFolder = PobierzSciezkeZapisu()
     If docelowyFolder = "" Then
-        MsgBox "Anulowano zapisywanie plików.", vbInformation, "Przerwano"
+        MsgBox "Anulowano zapisywanie plikï¿½w.", vbInformation, "Przerwano"
         Exit Sub
     End If
     
@@ -87,7 +101,7 @@ Sub ZaawansowaneWyszukiwanieWI()
     
     ' --- ETAP A: OUTLOOK ---
     If CzySzukacOutlook Then
-        ' [NOWE] Inicjalizacja paska przed startem pêtli
+        ' [NOWE] Inicjalizacja paska przed startem pï¿½tli
         frmSzukajWI.AktualizujPostep 0, "Przygotowanie skanowania Outlooka..."
         
         Dim ns As Outlook.NameSpace: Set ns = Application.GetNamespace("MAPI")
@@ -112,12 +126,12 @@ Sub ZaawansowaneWyszukiwanieWI()
         filtrSQL = "@SQL=" & IIf(warunkiTekst <> "" And warunekDaty <> "", "(" & warunkiTekst & ") AND " & warunekDaty, warunkiTekst & warunekDaty)
         Set items = ns.GetDefaultFolder(olFolderInbox).items.Restrict(filtrSQL)
         
-        ' [NOWE] Obliczamy ca³kowit¹ iloœæ maili do paska
+        ' [NOWE] Obliczamy caï¿½kowitï¿½ iloï¿½ï¿½ maili do paska
         Dim totalItems As Long
         totalItems = items.Count
         
         For i = totalItems To 1 Step -1
-            ' [NOWE] Odœwie¿anie paska co 5 maili
+            ' [NOWE] Odï¿½wieï¿½anie paska co 5 maili
             If i Mod 5 = 0 Then
                 frmSzukajWI.AktualizujPostep (totalItems - i) / totalItems, "Przeszukiwanie Outlooka..."
             End If
@@ -141,12 +155,12 @@ Sub ZaawansowaneWyszukiwanieWI()
     ' --- ETAP B: SERWER ---
     If CzySzukacSerwer Then
         Dim sciezkaItem As Variant
-        ' [NOWE] Zmienne do œledzenia postêpu folderów
+        ' [NOWE] Zmienne do ï¿½ledzenia postï¿½pu folderï¿½w
         Dim folderIndex As Integer: folderIndex = 1
         Dim totalFolders As Integer: totalFolders = SciezkiSerwer.Count
         
         For Each sciezkaItem In SciezkiSerwer
-            ' [NOWE] Odœwie¿anie paska przy zmianie folderu
+            ' [NOWE] Odï¿½wieï¿½anie paska przy zmianie folderu
             frmSzukajWI.AktualizujPostep (folderIndex / totalFolders), "Skanowanie folderu: " & fso.GetFileName(CStr(sciezkaItem))
             
             If fso.FolderExists(CStr(sciezkaItem)) Then
@@ -156,18 +170,18 @@ Sub ZaawansowaneWyszukiwanieWI()
         Next sciezkaItem
     End If
     
-    ' [NOWE] Wymuszenie 100% po zakoñczeniu
-    frmSzukajWI.AktualizujPostep 1, "Zakoñczono!"
-    ' [NOWE] Zamkniêcie formularza z paskiem
+    ' [NOWE] Wymuszenie 100% po zakoï¿½czeniu
+    frmSzukajWI.AktualizujPostep 1, "Zakoï¿½czono!"
+    ' [NOWE] Zamkniï¿½cie formularza z paskiem
     Unload frmSzukajWI
 
-    MsgBox "Eksport zakoñczony!" & vbCrLf & "Outlook: " & licznikOutlook & " | Serwer: " & licznikSerwer, vbInformation, "WI Status"
+    MsgBox "Eksport zakoï¿½czony!" & vbCrLf & "Outlook: " & licznikOutlook & " | Serwer: " & licznikSerwer, vbInformation, "WI Status"
     Call Shell("explorer.exe " & folderZapisu, vbNormalFocus)
     Exit Sub
 
 ErrorHandler:
-    Unload frmSzukajWI ' [NOWE] Zabezpieczenie przed zablokowaniem formularza przy b³êdzie
-    MsgBox "B³¹d: " & Err.Description, vbCritical
+    Unload frmSzukajWI ' [NOWE] Zabezpieczenie przed zablokowaniem formularza przy bï¿½ï¿½dzie
+    MsgBox "Bï¿½ï¿½d: " & Err.Description, vbCritical
 End Sub
 
 ' =========================================================
@@ -180,16 +194,16 @@ Private Function ZarzadzajKonfliktem(ByVal sciezka As String, fso As Object) As 
     If G_PominWszystkie Then ZarzadzajKonfliktem = False: Exit Function
     
     Dim pyt As VbMsgBoxResult
-    pyt = MsgBox("Plik ju¿ istnieje: " & vbCrLf & Mid(sciezka, InStrRev(sciezka, "\") + 1) & vbCrLf & vbCrLf & _
+    pyt = MsgBox("Plik juï¿½ istnieje: " & vbCrLf & Mid(sciezka, InStrRev(sciezka, "\") + 1) & vbCrLf & vbCrLf & _
                  "[TAK] - Nadpisz ten jeden" & vbCrLf & _
-                 "[NIE] - Pomiñ ten jeden" & vbCrLf & _
-                 "[ANULUJ] - OPCJA DLA WSZYSTKICH", vbYesNoCancel + vbQuestion, "Konflikt plików")
+                 "[NIE] - Pomiï¿½ ten jeden" & vbCrLf & _
+                 "[ANULUJ] - OPCJA DLA WSZYSTKICH", vbYesNoCancel + vbQuestion, "Konflikt plikï¿½w")
                  
     If pyt = vbYes Then ZarzadzajKonfliktem = True
     If pyt = vbNo Then ZarzadzajKonfliktem = False
     If pyt = vbCancel Then
         Dim zb As VbMsgBoxResult
-        zb = MsgBox("Czy nadpisaæ WSZYSTKIE duble?" & vbCrLf & "[TAK] = Wszystkie" & vbCrLf & "[NIE] = Pomiñ wszystkie", vbYesNo + vbExclamation, "Decyzja zbiorcza")
+        zb = MsgBox("Czy nadpisaï¿½ WSZYSTKIE duble?" & vbCrLf & "[TAK] = Wszystkie" & vbCrLf & "[NIE] = Pomiï¿½ wszystkie", vbYesNo + vbExclamation, "Decyzja zbiorcza")
         If zb = vbYes Then G_NadpiszWszystkie = True: ZarzadzajKonfliktem = True Else G_PominWszystkie = True: ZarzadzajKonfliktem = False
     End If
 End Function
@@ -351,7 +365,7 @@ Private Function OcjenReguly(subjekt As String, nadawca As String, nazwaPliku As
         
         pattern = GetSetting(APP_CFG, ""Reguly\" & i, ""Wzorzec"", """")
         cel = GetSetting(APP_CFG, ""Reguly\" & i, ""Cel"", """")
-        If cel = """" Then GoTo NastêpnaRegula
+        If cel = """" Then GoTo Nastï¿½pnaRegula
         
         Select Case warunek
             Case ""Temat""
@@ -363,7 +377,7 @@ Private Function OcjenReguly(subjekt As String, nadawca As String, nazwaPliku As
         End Select
         
         If OcjenReguly <> """" Then Exit Function
-NastêpnaRegula:
+Nastï¿½pnaRegula:
     Next i
 End Function
 Function PobierzSciezkeZapisu() As String
@@ -373,9 +387,9 @@ Function PobierzSciezkeZapisu() As String
     OstatniaSciezka = VBA.GetSetting("OutlookWI_Search", "Ustawienia", "OstatniKatalogZapisu", "")
     
     If OstatniaSciezka <> "" Then
-        odpowiedz = MsgBox("Wyniki s¹ gotowe do skopiowania." & vbCrLf & vbCrLf & _
+        odpowiedz = MsgBox("Wyniki sï¿½ gotowe do skopiowania." & vbCrLf & vbCrLf & _
                            "Ostatnie miejsce zapisu to:" & vbCrLf & OstatniaSciezka & vbCrLf & vbCrLf & _
-                           "Czy ZAPISAÆ JAK POPRZEDNIO?", vbYesNoCancel + vbQuestion, "Kreator zapisu")
+                           "Czy ZAPISAï¿½ JAK POPRZEDNIO?", vbYesNoCancel + vbQuestion, "Kreator zapisu")
         If odpowiedz = vbYes Then
             PobierzSciezkeZapisu = OstatniaSciezka
             Exit Function
@@ -400,7 +414,7 @@ Sub WyszukajPlikiZAnimacja()
     Set fso = CreateObject("Scripting.FileSystemObject")
     
     Dim folderPath As String
-    folderPath = "D:\DANE" ' Zmieñ na swój folder docelowy
+    folderPath = "D:\DANE" ' Zmieï¿½ na swï¿½j folder docelowy
     
     If Not fso.FolderExists(folderPath) Then
         MsgBox "Folder nie istnieje!", vbCritical
@@ -412,21 +426,21 @@ Sub WyszukajPlikiZAnimacja()
     Set oFolder = fso.GetFolder(folderPath)
     
     Dim totalFiles As Long
-    totalFiles = oFolder.Files.Count ' Wa¿ne: to sprawdza tylko g³ówny katalog, nie podfoldery
+    totalFiles = oFolder.Files.Count ' Waï¿½ne: to sprawdza tylko gï¿½ï¿½wny katalog, nie podfoldery
     
     If totalFiles = 0 Then
         MsgBox "Folder jest pusty.", vbInformation
         Exit Sub
     End If
     
-    ' Pokazujemy formularz w trybie nieblokuj¹cym
+    ' Pokazujemy formularz w trybie nieblokujï¿½cym
     frmSzukajWI.Show vbModeless
     
     Dim oFile As Object
     Dim currentIndex As Long
     currentIndex = 0
     
-    ' Rozpoczynamy pêtlê po plikach
+    ' Rozpoczynamy pï¿½tlï¿½ po plikach
     For Each oFile In oFolder.Files
         currentIndex = currentIndex + 1
         

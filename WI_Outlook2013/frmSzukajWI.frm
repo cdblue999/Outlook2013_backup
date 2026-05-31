@@ -1,3 +1,17 @@
+ï»¿' Copyright (C) 2026 ZMS
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSzukajWI 
    Caption         =   "Wyszukiwarka Korespondencji WI"
@@ -37,18 +51,18 @@ Private Const APP_NAME As String = "OutlookWI_Search"
 ' ----------------------------------------------
 
 Private Sub UserForm_Initialize()
-    ' Odczyt pól tekstowych z rejestru
+    ' Odczyt pï¿½l tekstowych z rejestru
     Me.txtNumer.Value = GetSetting(APP_NAME, "LastSearch", "Numer", "")
     Me.txtNadawca.Value = GetSetting(APP_NAME, "LastSearch", "Nadawca", "")
     Me.txtData.Value = GetSetting(APP_NAME, "LastSearch", "Data", "")
     Me.txtDotyczy.Value = GetSetting(APP_NAME, "LastSearch", "Dotyczy", "")
     Me.txtKomentarz.Value = GetSetting(APP_NAME, "LastSearch", "Komentarz", "")
     
-    ' --- NOWOŒÆ: Checkboxy domyœlnie zaznaczone na True ---
+    ' --- NOWOï¿½ï¿½: Checkboxy domyï¿½lnie zaznaczone na True ---
     Me.chkSzukajOutlook.Value = CBool(GetSetting(APP_NAME, "LastSearch", "ChkOutlook", "True"))
     Me.chkSzukajSerwer.Value = CBool(GetSetting(APP_NAME, "LastSearch", "ChkSerwer", "True"))
     
-    ' --- Odczyt listy œcie¿ek ---
+    ' --- Odczyt listy ï¿½cieï¿½ek ---
     Dim zapisaneSciezki As String
     Dim tablicaSciezek() As String
     Dim s As Variant
@@ -70,7 +84,7 @@ Private Sub btnSzukaj_Click()
         Exit Sub
     End If
     
-    ' 2. Pakowanie œcie¿ek z listy do jednego ci¹gu tekstowego
+    ' 2. Pakowanie ï¿½cieï¿½ek z listy do jednego ciï¿½gu tekstowego
     Dim i As Integer
     Dim doZapisu As String
     Set SciezkiSerwer = New Collection
@@ -89,11 +103,11 @@ Private Sub btnSzukaj_Click()
     SaveSetting APP_NAME, "LastSearch", "Komentarz", Me.txtKomentarz.Value
     SaveSetting APP_NAME, "LastSearch", "SciezkiList", doZapisu
     
-    ' --- NOWOŒÆ: Zapisywanie stanu checkboxów ---
+    ' --- NOWOï¿½ï¿½: Zapisywanie stanu checkboxï¿½w ---
     SaveSetting APP_NAME, "LastSearch", "ChkOutlook", CStr(Me.chkSzukajOutlook.Value)
     SaveSetting APP_NAME, "LastSearch", "ChkSerwer", CStr(Me.chkSzukajSerwer.Value)
     
-    ' 4. Przygotowanie kluczy dla modu³u g³ównego
+    ' 4. Przygotowanie kluczy dla moduï¿½u gï¿½ï¿½wnego
     Set SzukaneKlucze = New Collection
     If CleanInput(Me.txtNumer.Value) <> "" Then SzukaneKlucze.Add CleanInput(Me.txtNumer.Value)
     If CleanInput(Me.txtNadawca.Value) <> "" Then SzukaneKlucze.Add CleanInput(Me.txtNadawca.Value)
@@ -115,14 +129,14 @@ Private Sub btnAnuluj_Click()
 End Sub
 
 ' -------------------------------------------------------------------------
-' POPRAWIONY KOD OBS£UGI LISTY ŒCIE¯EK DLA OUTLOOKA
+' POPRAWIONY KOD OBSï¿½UGI LISTY ï¿½CIEï¿½EK DLA OUTLOOKA
 ' -------------------------------------------------------------------------
 Private Sub btnAddPath_Click()
     Dim objShell As Object
     Dim objFolder As Object
     
     Set objShell = CreateObject("Shell.Application")
-    ' Wywo³anie natywnego okna wyboru folderu systemu Windows
+    ' Wywoï¿½anie natywnego okna wyboru folderu systemu Windows
     Set objFolder = objShell.BrowseForFolder(0, "Wybierz folder do przeszukiwania na serwerze:", 0, 0)
     
     If Not objFolder Is Nothing Then
@@ -132,7 +146,7 @@ End Sub
 
 Private Sub btnRemovePath_Click()
     Dim i As Integer
-    ' Pêtla od ty³u, ¿eby nie zgubiæ indeksów przy usuwaniu
+    ' Pï¿½tla od tyï¿½u, ï¿½eby nie zgubiï¿½ indeksï¿½w przy usuwaniu
     For i = Me.lstSciezki.ListCount - 1 To 0 Step -1
         If Me.lstSciezki.Selected(i) Then
             Me.lstSciezki.RemoveItem i
@@ -154,29 +168,29 @@ Private Function CleanInput(val As String) As String
 End Function
 
 ' -------------------------------------------------------------------------
-' FUNKCJA ANIMUJ¥CA PASEK POSTÊPU
+' FUNKCJA ANIMUJï¿½CA PASEK POSTï¿½PU
 ' -------------------------------------------------------------------------
 Public Sub AktualizujPostep(procent As Single, tekst As String)
     On Error Resume Next
     
-    ' Jeœli formularz jest z jakiegoœ powodu ukryty, upewnij siê, ¿e jest widoczny bez blokowania kodu
+    ' Jeï¿½li formularz jest z jakiegoï¿½ powodu ukryty, upewnij siï¿½, ï¿½e jest widoczny bez blokowania kodu
     If Me.Visible = False Then Me.Show vbModeless
     
-    ' Maksymalna szerokoœæ to szerokoœæ etykiety pe³ni¹cej rolê t³a
+    ' Maksymalna szerokoï¿½ï¿½ to szerokoï¿½ï¿½ etykiety peï¿½niï¿½cej rolï¿½ tï¿½a
     Dim maxWidth As Single
     maxWidth = Me.lblPrgBg.Width
     
-    ' Zabezpieczenie przed wartoœciami z kosmosu
+    ' Zabezpieczenie przed wartoï¿½ciami z kosmosu
     If procent < 0 Then procent = 0
     If procent > 1 Then procent = 1
     
-    ' Zmiana szerokoœci kolorowego paska
+    ' Zmiana szerokoï¿½ci kolorowego paska
     Me.lblPrgBar.Width = maxWidth * procent
     
     ' Aktualizacja tekstu (opcjonalnie)
     Me.lblPrgText.Caption = tekst & " (" & Format(procent, "0%") & ")"
     
-    ' BARDZO WA¯NE: Wymusza odœwie¿enie grafiki okna. Bez tego pasek siê "zawiesi" do koñca pêtli.
+    ' BARDZO WAï¿½NE: Wymusza odï¿½wieï¿½enie grafiki okna. Bez tego pasek siï¿½ "zawiesi" do koï¿½ca pï¿½tli.
     DoEvents
 End Sub
 

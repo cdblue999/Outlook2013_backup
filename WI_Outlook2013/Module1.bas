@@ -1,3 +1,17 @@
+ï»¿' Copyright (C) 2026 ZMS
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Attribute VB_Name = "Module1"
 Public Sub ProcesujIZapiszMail(ByVal oMail As Outlook.mailItem)
     Dim fso As Object: Set fso = CreateObject("Scripting.FileSystemObject")
@@ -10,17 +24,17 @@ Public Sub ProcesujIZapiszMail(ByVal oMail As Outlook.mailItem)
     nrProjektu = SzukajNumeruProjektu(oMail.Subject)
     
     If nrProjektu <> "" Then
-        ' 2. ZnajdŸ folder projektu na dysku D:
-        ' U¿ywamy funkcji, któr¹ napisaliœmy wczeœniej
+        ' 2. Znajdï¿½ folder projektu na dysku D:
+        ' Uï¿½ywamy funkcji, ktï¿½rï¿½ napisaliï¿½my wczeï¿½niej
         folderProjektu = FindFolderByPrefix("D:\DANE\", nrProjektu, fso)
         
         If folderProjektu <> "" Then
             sciezkaZapisu = folderProjektu & "\poczta_automatyczna\"
             If Not fso.FolderExists(sciezkaZapisu) Then fso.CreateFolder sciezkaZapisu
             
-            ' 3. Zapisz za³¹czniki, jeœli pasuj¹ do s³ów kluczowych
+            ' 3. Zapisz zaï¿½ï¿½czniki, jeï¿½li pasujï¿½ do sï¿½ï¿½w kluczowych
             For Each atmt In oMail.Attachments
-                ' Wykorzystujemy Twoj¹ funkcjê CzyToDokumentUmowny
+                ' Wykorzystujemy Twojï¿½ funkcjï¿½ CzyToDokumentUmowny
                 If CzyToDokumentUmowny(atmt.fileName) Then
                     atmt.SaveAsFile sciezkaZapisu & Format(oMail.ReceivedTime, "yyyy-mm-dd_HHmm_") & atmt.fileName
                 End If
@@ -29,11 +43,11 @@ Public Sub ProcesujIZapiszMail(ByVal oMail As Outlook.mailItem)
     End If
 End Sub
 
-' Funkcja pomocnicza do wyci¹gania numeru z tematu
+' Funkcja pomocnicza do wyciï¿½gania numeru z tematu
 Private Function SzukajNumeruProjektu(ByVal temat As String) As String
     Dim regEx As Object
     Set regEx = CreateObject("VBScript.RegExp")
-    regEx.Pattern = "\d{5}" ' Szuka dok³adnie 5 cyfr obok siebie
+    regEx.Pattern = "\d{5}" ' Szuka dokï¿½adnie 5 cyfr obok siebie
     
     If regEx.Test(temat) Then
         SzukajNumeruProjektu = regEx.Execute(temat)(0).Value

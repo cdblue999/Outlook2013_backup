@@ -1,3 +1,17 @@
+ï»¿' Copyright (C) 2026 ZMS
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Attribute VB_Name = "Module2"
 Option Explicit
 
@@ -15,13 +29,13 @@ Sub EksportujUmowyDraft_Pro()
     Dim projectFolderPath As String, targetPath As String, safeFileName As String
     Dim i As Long, licznik As Integer
     
-    ' 1. Pobranie ostatnio u¿ywanego numeru (User Friendly)
+    ' 1. Pobranie ostatnio uï¿½ywanego numeru (User Friendly)
     domyslnyNr = GetSetting(APP_NAME, "Settings", "LastProject", "")
-    nrProjektu = InputBox("Podaj 5-cyfrowy numer projektu:", "Eksport Umów DRAFT", domyslnyNr)
+    nrProjektu = InputBox("Podaj 5-cyfrowy numer projektu:", "Eksport Umï¿½w DRAFT", domyslnyNr)
     
     If nrProjektu = "" Then Exit Sub
     If Not nrProjektu Like "#####" Then
-        MsgBox "B³¹d: Numer projektu musi mieæ dok³adnie 5 cyfr.", vbCritical, "B³¹d wejœcia"
+        MsgBox "Bï¿½ï¿½d: Numer projektu musi mieï¿½ dokï¿½adnie 5 cyfr.", vbCritical, "Bï¿½ï¿½d wejï¿½cia"
         Exit Sub
     End If
     
@@ -30,9 +44,9 @@ Sub EksportujUmowyDraft_Pro()
     On Error GoTo ErrorHandler
     Set fso = CreateObject("Scripting.FileSystemObject")
     
-    ' 2. Sprawdzenie dostêpnoœci zasobów
+    ' 2. Sprawdzenie dostï¿½pnoï¿½ci zasobï¿½w
     If Not fso.FolderExists(BASE_SEARCH_PATH) Then
-        MsgBox "B³¹d: Dysk D: lub folder " & BASE_SEARCH_PATH & " jest od³¹czony.", vbCritical
+        MsgBox "Bï¿½ï¿½d: Dysk D: lub folder " & BASE_SEARCH_PATH & " jest odï¿½ï¿½czony.", vbCritical
         Exit Sub
     End If
     
@@ -66,7 +80,7 @@ Sub EksportujUmowyDraft_Pro()
             
             For Each atmt In mail.Attachments
                 If CzyToDokumentUmowny(atmt.fileName) Then
-                    ' Nazewnictwo: RRRR-MM-DD_NazwaPliku (u³atwia sortowanie w D:\DANE)
+                    ' Nazewnictwo: RRRR-MM-DD_NazwaPliku (uï¿½atwia sortowanie w D:\DANE)
                     safeFileName = Format(mail.ReceivedTime, "yyyy-mm-dd") & "_" & CleanFileName(atmt.fileName)
                     
                     If Not fso.FileExists(targetPath & safeFileName) Then
@@ -78,19 +92,19 @@ Sub EksportujUmowyDraft_Pro()
         End If
     Next i
     
-    MsgBox "Eksport zakoñczony sukcesem!" & vbCrLf & _
+    MsgBox "Eksport zakoï¿½czony sukcesem!" & vbCrLf & _
            "Projekt: " & nrProjektu & vbCrLf & _
-           "Nowych plików: " & licznik, vbInformation, "Sukces WI"
+           "Nowych plikï¿½w: " & licznik, vbInformation, "Sukces WI"
     Exit Sub
 
 ErrorHandler:
-    MsgBox "B³¹d krytyczny: " & Err.Description, vbCritical
+    MsgBox "Bï¿½ï¿½d krytyczny: " & Err.Description, vbCritical
 End Sub
 
-' --- FUNKCJA SZUKAJ¥CA FOLDERU PO NUMERZE ---
+' --- FUNKCJA SZUKAJï¿½CA FOLDERU PO NUMERZE ---
 Public Function FindFolderByPrefix(root As String, prefix As String, fso As Object) As String
     Dim subFolder As Object
-    On Error Resume Next ' Na wypadek braku dostêpu do jakiegoœ folderu
+    On Error Resume Next ' Na wypadek braku dostï¿½pu do jakiegoï¿½ folderu
     For Each subFolder In fso.GetFolder(root).SubFolders
         If Left(subFolder.Name, Len(prefix)) = prefix Then
             FindFolderByPrefix = subFolder.path
@@ -100,7 +114,7 @@ Public Function FindFolderByPrefix(root As String, prefix As String, fso As Obje
     FindFolderByPrefix = ""
 End Function
 
-' --- FILTR DOKUMENTÓW (Dodany klucz 'draft' i 'wniosek') ---
+' --- FILTR DOKUMENTï¿½W (Dodany klucz 'draft' i 'wniosek') ---
 Public Function CzyToDokumentUmowny(fname As String) As Boolean
     Dim ext As String, n As String
     Dim klucze As Variant, k As Variant
